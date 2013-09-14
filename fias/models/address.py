@@ -6,11 +6,43 @@ from django.utils.text import force_unicode
 from django.utils.translation import ugettext_lazy as _
 
 from fias.models.addrobj import AddrObj
-from fias.fields import AddressField, ChainedAreaField
+from fias.fields import AddressField, ChainedAreaField, UUIDField
 
-__all__ = ['FIASAddress', 'FIASAddressWithArea',
+__all__ = ['Address', 'FIASAddress', 'FIASAddressWithArea',
            'FIASHouse',
            'FIASFullAddress', 'FIASFullAddressWithArea']
+
+class Address(models.Model):
+
+    _field_codes = {
+        1: 'region',
+        2: 'autonomy',
+        3: 'area',
+        4: 'city',
+        5: 'city_area',
+        6: 'place',
+        7: 'street',
+        90: 'extra',
+        91: 'sub_extra',
+    }
+
+    class Meta:
+        app_label = 'fias'
+
+    guid = UUIDField(primary_key=True)
+    addrobj = models.ForeignKey(AddrObj)
+
+    region = models.CharField(_('region'), max_length=120, db_index=True)
+    autonomy = models.CharField(_('autonomy'), max_length=120, db_index=True)
+    area = models.CharField(_('area'), max_length=120, db_index=True)
+    city = models.CharField(_('city'), max_length=120, db_index=True)
+    city_area = models.CharField(_('city area'), max_length=120, db_index=True)
+    place = models.CharField(_('inhabited locality'), max_length=120, db_index=True)
+    street = models.CharField(_('street'), max_length=120, db_index=True)
+    extra = models.CharField(_('extra element'), max_length=120, db_index=True)
+    sub_extra = models.CharField(_('sub extra element'), max_length=120, db_index=True)
+
+
 
 
 class FIASAddress(models.Model):
