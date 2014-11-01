@@ -38,6 +38,8 @@ if FIAS_SEARCH_ENGINE == 'sphinx':
 
 FIAS_SUGGEST_VIEW = 'fias:suggest_{0}'.format(FIAS_SEARCHERS[FIAS_SEARCH_ENGINE])
 
+FIAS_LOADERS_PATH = getattr(settings, 'FIAS_LOADERS_PATH', None)
+
 user_weights = getattr(settings, 'FIAS_SB_WEIGHTS', {})
 if not isinstance(user_weights, dict):
     raise ImproperlyConfigured('FIAS_SB_WEIGHTS should be a dict type')
